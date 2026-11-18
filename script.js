@@ -168,10 +168,36 @@ function setupPaymentPage(order) {
 }
 
 function confirmPayment() {
+    // 1. Simpan ke LocalStorage seperti biasa sebagai cadangan
     const history = JSON.parse(localStorage.getItem("pangubipop_orders") || "[]");
     history.push(currentOrder);
     localStorage.setItem("pangubipop_orders", JSON.stringify(history));
 
+    // 2. Format detail item menjadi teks biasa untuk dimasukkan ke Google Sheet
+    let itemsString = currentOrder.items.map(i => `${i.name} (x${i.qty})`).join(", ");
+
+    // 3. Kirim data otomatis ke Google Sheets (Ganti URL di bawah dengan Web App URL Anda!)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec'; 
+    
+    const payload = {
+        invoice: currentOrder.invoice,
+        time: currentOrder.time,
+        name: currentOrder.name,
+        whatsapp: currentOrder.whatsapp,
+        address: currentOrder.address,
+        payment: currentOrder.payment,
+        items: itemsString,
+        total: formatRupiah(currentOrder.total)
+    };
+
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(error => console.error('Error!', error.message));
+
+    // 4. Tampilkan struk berhasil di halaman web
     document.getElementById("payment-process-box").style.display = "none";
     document.getElementById("receipt-box").style.display = "block";
 
