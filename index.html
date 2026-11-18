@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PangUbiPop - Camilan Gurih & Manis</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar Bersih tanpa Indikator Step -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-brand">
+                <img src="logo.png" alt="Logo" class="nav-logo-img" onerror="this.style.display='none'">
+                <span>🫧 PangUbiPop</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TAHAP 1: PILIH MENU -->
+    <div id="page-menu">
+        <header class="hero">
+            <div class="hero-content">
+                <div class="hero-logo-container">
+                    <img src="foto logo.jpg" alt="Logo PangUbiPop" class="hero-logo" onerror="this.parentElement.innerHTML='🫧'">
+                </div>
+                <h1>HELLO, PangUbiPop LOVERS! 👋🫧</h1>
+                <p>Lagi pengen camilan yang gurih atau manis? Pilih menu favoritmu di bawah ini!</p>
+            </div>
+        </header>
+
+        <main class="container pb-sticky">
+            <section class="section">
+                <div class="section-header">
+                    <h2>OUR MENU</h2>
+                    <p>Atur jumlah pack yang ingin kamu pesan</p>
+                </div>
+
+                <div class="menu-grid">
+                    <!-- Item 1: Mini Pangsit -->
+                    <div class="product-card">
+                        <div class="product-img-box">
+                            <img src="pangsit-logo.jpg" alt="Mini Pangsit" class="product-photo" onerror="this.parentElement.innerHTML='🥟'">
+                        </div>
+                        <div class="product-info">
+                            <h3>Mini Pangsit (Pang)</h3>
+                            <p class="product-desc">Pangsit mini super renyah dengan bumbu gurih yang bikin nagih.</p>
+                            <div class="product-price">Rp 12.000 <span>/ Pack</span></div>
+                        </div>
+                        <div class="qty-control">
+                            <button type="button" onclick="updateQty('pang', -1)">-</button>
+                            <span id="qty-pang">0</span>
+                            <button type="button" onclick="updateQty('pang', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Ubi Brule -->
+                    <div class="product-card">
+                        <div class="product-img-box">
+                            <img src="ubi.logo.jpg" alt="Ubi Brule" class="product-photo" onerror="this.parentElement.innerHTML='🍠'">
+                        </div>
+                        <div class="product-info">
+                            <h3>Ubi Brule (Ubi)</h3>
+                            <p class="product-desc">Ubi lembut manis dengan lapisan karamel panggang yang lumer di mulut.</p>
+                            <div class="product-price">Rp 12.000 <span>/ Pack</span></div>
+                        </div>
+                        <div class="qty-control">
+                            <button type="button" onclick="updateQty('ubi', -1)">-</button>
+                            <span id="qty-ubi">0</span>
+                            <button type="button" onclick="updateQty('ubi', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Bundling Package -->
+                    <div class="product-card best-seller">
+                        <div class="ribbon">HEMAT</div>
+                        <div class="product-img-box">
+                            <img src="bundling-logo.png" alt="Bundling Package" class="product-photo" onerror="this.parentElement.innerHTML='🫧'">
+                        </div>
+                        <div class="product-info">
+                            <h3>Bundling Package (Pop)</h3>
+                            <p class="product-desc">Paket komplit 1 Mini Pangsit + 1 Ubi Brule. Lebih hemat dan puas!</p>
+                            <div class="product-price">Rp 22.000 <span>/ Pack</span></div>
+                        </div>
+                        <div class="qty-control">
+                            <button type="button" onclick="updateQty('pop', -1)">-</button>
+                            <span id="qty-pop">0</span>
+                            <button type="button" onclick="updateQty('pop', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="sticky-cart-bar" class="sticky-bar" style="display: none;">
+            <div class="sticky-content">
+                <div>
+                    <span id="sticky-total-items" class="sticky-items">0 Pack dipilih</span>
+                    <div id="sticky-total-price" class="sticky-price">Rp 0</div>
+                </div>
+                <button type="button" class="btn-next" onclick="goToStep(2)">Lanjut Checkout →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAHAP 2: CHECKOUT FORM -->
+    <div id="page-checkout" style="display: none;">
+        <main class="container pt-top">
+            <button type="button" class="btn-back" onclick="goToStep(1)">← Kembali Ubah Menu</button>
+
+            <section class="checkout-box">
+                <h2>Detail Pengiriman & Pembayaran</h2>
+                
+                <div class="summary-card">
+                    <div class="summary-title">Ringkasan Pesanan Kamu:</div>
+                    <div id="checkout-summary-list"></div>
+                    <div class="summary-total">
+                        <span>Total Bayar:</span>
+                        <strong id="checkout-total-price">Rp 0</strong>
+                    </div>
+                </div>
+
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap Pemesan *</label>
+                        <input type="text" id="name" required placeholder="Masukkan nama lengkap Anda">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whatsapp">Nomor WhatsApp / HP *</label>
+                        <input type="tel" id="whatsapp" required placeholder="Contoh: 081234567890">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Alamat / Lokasi Pengantaran (Kampus/Kelas) *</label>
+                        <textarea id="address" rows="3" required placeholder="Contoh: Gedung A Lt. 3 Ruang 302 / COD di Kantin"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payment">Pilih Metode Pembayaran *</label>
+                        <select id="payment" required>
+                            <option value="QRIS GoPay">QRIS / GoPay (Scan Barcode)</option>
+                            <option value="COD">COD / Tunai saat pesanan diantar</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Lanjut ke Pembayaran 💳</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- TAHAP 3: PEMBAYARAN & STRUK -->
+    <div id="page-payment" style="display: none;">
+        <main class="container pt-top">
+            <div id="payment-process-box" class="checkout-box text-center">
+                <span id="invoice-id-badge" class="invoice-badge">#POP-0000</span>
+                <h2 style="margin-top: 10px;">Selesaikan Pembayaran</h2>
+                
+                <div class="payment-amount-box">
+                    <span>Total Tagihan</span>
+                    <h2 id="final-total-price">Rp 0</h2>
+                </div>
+
+                <div id="payment-instruction" class="instruction-box"></div>
+
+                <div class="action-buttons-row">
+                    <button type="button" class="btn-secondary" onclick="goToStep(2)">Ubah Data / Metode</button>
+                    <button type="button" id="btn-confirm-pay" class="btn-success" disabled style="opacity: 0.6; cursor: not-allowed;" onclick="confirmPayment()">Menunggu Pembayaran (10s) ⏳</button>
+                </div>
+            </div>
+
+            <div id="receipt-box" class="checkout-box" style="display: none;">
+                <div class="success-icon">🎉</div>
+                <h2 class="text-center" style="color: #16a34a;">Pembayaran Berhasil!</h2>
+                <p class="receipt-sub">Simpan atau screenshot bukti transaksi ini untuk ditunjukkan saat pesanan tiba.</p>
+                
+                <div class="receipt-details" id="receipt-content"></div>
+
+                <button type="button" class="submit-btn" style="margin-top: 20px;" onclick="resetAll()">Pesan Lagi / Kembali ke Menu Utama</button>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>© 2026 <strong>PangUbiPop</strong></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
