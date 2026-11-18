@@ -166,7 +166,7 @@ function confirmPayment() {
 
     let itemsString = currentOrder.items.map(i => `${i.name} (x${i.qty})`).join(", ");
 
-    const scriptURL = 'PASTE_WEB_APP_URL_ANDA_DI_SINI'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec'; 
     
     const payload = {
         invoice: currentOrder.invoice,
@@ -192,7 +192,7 @@ function confirmPayment() {
 
     let itemsHtml = currentOrder.items.map(i => `<div>• ${i.name} (x${i.qty}) - ${formatRupiah(i.subtotal)}</div>`).join("");
 
-    const sellerWhatsApp = "628299702438"; 
+    const sellerWhatsApp = "6288299702438"; 
     const waText = encodeURIComponent(
         `Halo Kak, saya sudah memesan di PangUbiPop!\n\n` +
         `No. Pesanan: #${currentOrder.invoice}\n` +
