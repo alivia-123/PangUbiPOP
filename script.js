@@ -204,7 +204,7 @@ function confirmPayment() {
     let itemsHtml = currentOrder.items.map(i => `<div>• ${i.name} (x${i.qty}) - ${formatRupiah(i.subtotal)}</div>`).join("");
 
     // Nomor WhatsApp Penjual (menggunakan nomor Anda)
-    const sellerWhatsApp = "628299702438"; 
+    const sellerWhatsApp = "6288299702438"; 
     const waText = encodeURIComponent(
         `Halo Kak, saya sudah memesan di PangUbiPop!\n\n` +
         `No. Pesanan: #${currentOrder.invoice}\n` +
