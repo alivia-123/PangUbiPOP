@@ -177,8 +177,7 @@ function confirmPayment() {
     let itemsString = currentOrder.items.map(i => `${i.name} (x${i.qty})`).join(", ");
 
     // 3. Kirim data otomatis ke Google Sheets (Ganti URL di bawah dengan Web App URL Anda!)
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec'; 
-    
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec';
     const payload = {
         invoice: currentOrder.invoice,
         time: currentOrder.time,
