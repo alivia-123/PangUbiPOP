@@ -145,13 +145,12 @@ function setupPaymentPage(order) {
             <div class="qris-box" style="text-align: center; padding: 15px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
                 <p style="margin-bottom: 12px;">Scan QR Code di bawah ini menggunakan aplikasi <strong>GoPay, Gojek, atau QRIS Bank Lainnya</strong>:</p>
                 
-                <!-- Tag gambar dengan pembungkus ukuran yang rapi -->
                 <div style="background: white; padding: 10px; display: inline-block; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 12px;">
-                    <img src="qris-gopay.jpg" alt="QRIS GoPay" style="width: 200px; height: 200px; object-fit: contain; display: block;" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://gopay.co.id';">
+                    <img src="qris-gopay.png" alt="QRIS GoPay" style="width: 200px; height: 200px; object-fit: contain; display: block;" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://gopay.co.id';">
                 </div>
 
                 <div>
-                    <a href="qris-gopay.jpg" download="QRIS-PangUbiPop.jpg" class="btn-download-qr" style="display: inline-block; background: #0284c7; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">📥 Unduh Gambar QR</a>
+                    <a href="qris-gopay.png" download="QRIS-PangUbiPop.png" class="btn-download-qr" style="display: inline-block; background: #0284c7; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600;">📥 Unduh Gambar QR</a>
                 </div>
                 
                 <small style="color:#64748b; display:block; margin-top:10px;">Pastikan nominal transfer sesuai dengan total tagihan.</small>
@@ -171,16 +170,15 @@ function setupPaymentPage(order) {
 }
 
 function confirmPayment() {
-    // 1. Simpan ke LocalStorage seperti biasa sebagai cadangan
     const history = JSON.parse(localStorage.getItem("pangubipop_orders") || "[]");
     history.push(currentOrder);
     localStorage.setItem("pangubipop_orders", JSON.stringify(history));
 
-    // 2. Format detail item menjadi teks biasa untuk dimasukkan ke Google Sheet
     let itemsString = currentOrder.items.map(i => `${i.name} (x${i.qty})`).join(", ");
 
-    // 3. Kirim data otomatis ke Google Sheets
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec';
+    // Ganti URL di bawah jika menggunakan Google Sheets database
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec'; 
+    
     const payload = {
         invoice: currentOrder.invoice,
         time: currentOrder.time,
@@ -200,11 +198,24 @@ function confirmPayment() {
         body: JSON.stringify(payload)
     }).catch(error => console.error('Error!', error.message));
 
-    // 4. Tampilkan struk berhasil di halaman web
     document.getElementById("payment-process-box").style.display = "none";
     document.getElementById("receipt-box").style.display = "block";
 
     let itemsHtml = currentOrder.items.map(i => `<div>• ${i.name} (x${i.qty}) - ${formatRupiah(i.subtotal)}</div>`).join("");
+
+    // Nomor WhatsApp Penjual (menggunakan nomor Anda)
+    const sellerWhatsApp = "628299702438"; 
+    const waText = encodeURIComponent(
+        `Halo Kak, saya sudah memesan di PangUbiPop!\n\n` +
+        `No. Pesanan: #${currentOrder.invoice}\n` +
+        `Nama: ${currentOrder.name}\n` +
+        `Jadwal: ${currentOrder.address}\n` +
+        `Catatan: ${currentOrder.notes}\n` +
+        `Metode: ${currentOrder.payment}\n` +
+        `Total: ${formatRupiah(currentOrder.total)}\n\n` +
+        `Berikut bukti pesanan saya.`
+    );
+    const waLink = `https://wa.me/${sellerWhatsApp}?text=${waText}`;
 
     document.getElementById("receipt-content").innerHTML = `
         <strong>No. Pesanan:</strong> #${currentOrder.invoice}<br>
@@ -217,6 +228,12 @@ function confirmPayment() {
         ${itemsHtml}
         <hr style="margin:8px 0; border:none; border-top:1px dashed #cbd5e1;">
         <strong>Total Dibayar: ${formatRupiah(currentOrder.total)}</strong>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="${waLink}" target="_blank" style="display: block; background: #22c55e; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px;">
+                💬 Konfirmasi Pesanan ke WhatsApp Penjual
+            </a>
+        </div>
     `;
 }
 
