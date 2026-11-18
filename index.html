@@ -133,11 +133,32 @@
                         <input type="tel" id="whatsapp" required placeholder="Contoh: 081234567890">
                     </div>
 
+                    <!-- Bagian Alamat diubah menjadi Dropdown Jadwal -->
                     <div class="form-group">
-                        <label for="address">Alamat / Lokasi Pengantaran (Kampus/Kelas) *</label>
-                        <textarea id="address" rows="3" required placeholder="Contoh: Gedung A Lt. 3 Ruang 302 / COD di Kantin"></textarea>
+                        <label for="address">Pilih Jadwal Pengantaran / Pengambilan *</label>
+                        <select id="address" required>
+                            <option value="" disabled selected>-- Pilih Hari & Jam --</option>
+                            <option value="Selasa, 24 November 2026 (10.00 - 13.00)">Selasa, 24 November 2026 (10.00 - 13.00)</option>
+                            <option value="Rabu, 25 November 2026 (11.00 - 13.00)">Rabu, 25 November 2026 (11.00 - 13.00)</option>
+                        </select>
                     </div>
 
+                    <!-- Tambahan Fitur Notes di bawah Alamat -->
+                    <div class="form-group">
+                        <label for="notes">Catatan / Detail Lokasi (Opsional)</label>
+                        <textarea id="notes" rows="2" placeholder="Contoh: Ketemuan di lobi / titip di satpam / tidak pedas"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payment">Pilih Metode Pembayaran *</label>
+                        <select id="payment" required>
+                            <option value="QRIS GoPay">QRIS / GoPay (Scan Barcode)</option>
+                            <option value="COD">COD / Tunai saat pesanan diantar</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Lanjut ke Pembayaran 💳</button>
+                </form>
                     <div class="form-group">
                         <label for="payment">Pilih Metode Pembayaran *</label>
                         <select id="payment" required>

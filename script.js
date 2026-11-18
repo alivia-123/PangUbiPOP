@@ -92,12 +92,15 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
         }
     }
 
+    const notesInput = document.getElementById("notes").value.trim();
     const randomNum = Math.floor(1000 + Math.random() * 9000);
+    
     currentOrder = {
         invoice: `POP-${randomNum}`,
         name: document.getElementById("name").value,
         whatsapp: document.getElementById("whatsapp").value,
         address: document.getElementById("address").value,
+        notes: notesInput !== "" ? notesInput : "-",
         payment: document.getElementById("payment").value,
         items: itemsList,
         total: total,
@@ -176,7 +179,7 @@ function confirmPayment() {
     // 2. Format detail item menjadi teks biasa untuk dimasukkan ke Google Sheet
     let itemsString = currentOrder.items.map(i => `${i.name} (x${i.qty})`).join(", ");
 
-    // 3. Kirim data otomatis ke Google Sheets (Ganti URL di bawah dengan Web App URL Anda!)
+    // 3. Kirim data otomatis ke Google Sheets
     const scriptURL = 'https://script.google.com/macros/s/AKfycbztxrPoLf6kkBcEpyyae_yljmo8TtL9CUksItBsXtAizIXX3S5PLHvzuq4vlY5cr_rTCg/exec';
     const payload = {
         invoice: currentOrder.invoice,
@@ -184,6 +187,7 @@ function confirmPayment() {
         name: currentOrder.name,
         whatsapp: currentOrder.whatsapp,
         address: currentOrder.address,
+        notes: currentOrder.notes,
         payment: currentOrder.payment,
         items: itemsString,
         total: formatRupiah(currentOrder.total)
@@ -206,7 +210,8 @@ function confirmPayment() {
         <strong>No. Pesanan:</strong> #${currentOrder.invoice}<br>
         <strong>Waktu:</strong> ${currentOrder.time}<br>
         <strong>Nama:</strong> ${currentOrder.name}<br>
-        <strong>Lokasi:</strong> ${currentOrder.address}<br>
+        <strong>Jadwal:</strong> ${currentOrder.address}<br>
+        <strong>Catatan:</strong> ${currentOrder.notes}<br>
         <strong>Metode:</strong> ${currentOrder.payment} (<span style="color:#16a34a;font-weight:bold;">LUNAS / DIPROSES</span>)
         <hr style="margin:8px 0; border:none; border-top:1px dashed #cbd5e1;">
         ${itemsHtml}
